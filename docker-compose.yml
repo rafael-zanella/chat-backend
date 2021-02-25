@@ -1,16 +1,38 @@
 version: "3"
 
 services:
-  db:
+
+  chat-nest-api:
+    build: .
+    entrypoint: ./.docker/entrypoint.sh
+    container_name: chat-nest-api
+    ports: 
+      - "3000:3000"
+    volumes: 
+      - .:/usr/src/app
+    depends_on: 
+      - postgres
+    networks: 
+      - chat-app-network
+
+
+  postgres:
+    container_name: postgres
     image: postgres
     restart: always
     ports:
-      - "15432:5432"
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: pass123
       POSTGRES_DB: chat
+      PG_DATA: /var/lib/postgresql/data
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: 
+      - chat-app-network
   
+
   pgAdmin:
     image: dpage/pgadmin4
     environment:
@@ -19,4 +41,13 @@ services:
     ports:
       - "16543:80"
     depends_on:
-      - db
+      - postgres
+    networks: 
+      - chat-app-network
+
+
+networks: 
+  chat-app-network:
+    driver: bridge
+volumes: 
+  pgdata:
