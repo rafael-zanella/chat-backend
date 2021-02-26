@@ -14,19 +14,19 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<InfoUserDto> {
     const user = this.userRepository.create(createUserDto);
     this.userRepository.save(user)
-    
+
     return new InfoUserDto(user);
   }
 
-  async findAll() {
+  async findAll(): Promise<InfoUserDto[]> {
     const userList = await this.userRepository.find();    
     return userList.map(user => new InfoUserDto(user));
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<InfoUserDto>{
     const user = await this.userRepository.findOne(id);
 
     if(!user) {
