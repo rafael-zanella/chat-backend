@@ -1,35 +1,27 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpCode } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { PaginationQueryDto } from './dto/pagination-query.dto';
+import { Observable } from 'rxjs';
+import { LoginUserDto } from './dto/login-user.dto';
+import { UserI } from './entities/user.interface';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  create(@Body() createUserDto: CreateUserDto): Observable<UserI> {
     return this.userService.create(createUserDto);
   }
 
+  @Post('login')
+  @HttpCode(200)
+  login(@Body() loginUserDto: LoginUserDto): Observable<string> {
+    return this.userService.login(loginUserDto);
+  }
+
   @Get()
-  findAll() {
+  findAll(): Observable<UserI[]> {
     return this.userService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  }
-
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
   }
 }
