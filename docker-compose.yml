@@ -18,7 +18,7 @@ services:
 
   postgres:
     container_name: postgres
-    image: postgres
+    build: ./.docker/postgres
     restart: always
     ports:
       - "5432:5432"
@@ -28,7 +28,7 @@ services:
       POSTGRES_DB: chat
       PG_DATA: /var/lib/postgresql/data
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./.docker/pgdata:/var/lib/postgresql/data
     networks: 
       - chat-app-network
   
@@ -49,5 +49,4 @@ services:
 networks: 
   chat-app-network:
     driver: bridge
-volumes: 
-  pgdata:
+    
