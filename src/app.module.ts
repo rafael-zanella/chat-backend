@@ -8,7 +8,8 @@ import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(), 
-    UserModule, AuthModule
+    UserModule, 
+    AuthModule,
   ],
   controllers: [
     AppController,

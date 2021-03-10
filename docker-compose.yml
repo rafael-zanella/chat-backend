@@ -6,6 +6,8 @@ services:
     build: .
     entrypoint: ./.docker/entrypoint.sh
     container_name: chat-nest-api
+    environment: 
+      JWT_SECRET: 1hard_to_guess_secret
     ports: 
       - "3000:3000"
     volumes: 
